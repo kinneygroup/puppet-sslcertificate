@@ -13,28 +13,28 @@
 # === Parameters
 #
 # [*password*]
-# The password for the given certifcate
+# The password for the given certificate
+# By default is undef
 #
 # [*location*]
 # The location to store intermediate certificates.
 # Do not end the string with any forward or backslash.
 #
 # [*thumbprint*]
-# The thumbprint used to verify the certifcate
+# The thumbprint used to verify the certificate
 #
 # [*friendly_name*]
 # The alias of the certificate... 'friendly_name' is the cert store property in Windows
 # friendly_name => 'SomeCertAlias',
 #
 # [*store_dir*]
-# The certifcate store where the certifcate will be installed to
+# The certificate store where the certificate will be installed to
 #
 # [*root_store*]
-# The store location for the given certifcation store. Either LocalMachine or CurrentUser
+# The store location for the given certification store. Either LocalMachine or CurrentUser
 #
 # [*scripts_dir*]
-# The directory where the scripts to verify and install the certificates will be stored.
-# By default is C:\temp
+# This parameter has been deprecated and is no longer used.
 #
 # [*keystore_flags*]
 # Flags to set on the keys, such as MachineKeySet, Exportable, or PersistKeySet.  Provide
@@ -86,15 +86,14 @@
 #  }
 #
 define sslcertificate (
-  String[1] $password,
   String[1] $location,
   String[1] $thumbprint,
-  String keystore_flags,
-  String $friendly_name,
+  String[1] keystore_flags,
+  String[1] $friendly_name,
+  Optional[String[1]] $password    = undef,
   String[1] $root_store            = 'LocalMachine',
   String[1] $store_dir             = 'My',
   Stdlib::Windowspath $scripts_dir = 'C:\temp',
-  Boolean $exportable              = true
 ) {
 
   ensure_resource('file', $scripts_dir, {
@@ -119,9 +118,8 @@ define sslcertificate (
 
   exec { "Install-${name}-SSLCert":
     provider  => powershell,
-    command   => "${scripts_dir}\\import-${name}.ps1",
-    onlyif    => "${scripts_dir}\\inspect-${name}.ps1",
+    command   => template('sslcertificate/import.ps1.erb'),
+    onlyif    => template('sslcertificate/inspect.ps1.erb'),
     logoutput => true,
-    require   => [File["inspect-${name}-certificate.ps1"], File["import-${name}-certificate.ps1"]],
   }
 }
