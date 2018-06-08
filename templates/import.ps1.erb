@@ -35,3 +35,5 @@ Get-Item -Path cert:\LocalMachine\My, cert:\<%= @root_store %>\<%= @store_dir %>
   }
   $store.close()
 }
+
+Remove-Item $MyINvocation.InvocationName
