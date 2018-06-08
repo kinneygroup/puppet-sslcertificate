@@ -10,7 +10,8 @@ describe 'sslcertificate', type: :define do
         location: 'C:\SslCertificates',
         thumbprint: '07E5C1AF7F5223CB975CC29B5455642F5570798B',
         root_store: 'LocalMachine',
-        store_dir: 'My'
+        store_dir: 'My',
+        keystore_flags: 'exportable'
       }
     end
 
@@ -32,8 +33,7 @@ describe 'sslcertificate', type: :define do
         location: 'C:\SslCertificates',
         thumbprint: '07E5C1AF7F5223CB975CC29B5455642F5570798B',
         root_store: 'LocalMachine',
-        store_dir: 'My',
-        exportable: false
+        store_dir: 'My'
       }
     end
 
