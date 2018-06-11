@@ -88,7 +88,7 @@
 define sslcertificate (
   String[1] $location,
   String[1] $thumbprint,
-  String[1] keystore_flags,
+  String[1] $keystore_flags,
   String[1] $friendly_name,
   Optional[String[1]] $password    = undef,
   String[1] $root_store            = 'LocalMachine',
