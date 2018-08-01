@@ -100,6 +100,7 @@ define sslcertificate (
     ensure => directory
   })
 
+  # These two file resources are just here to leave a copy of what was run behind
   file { "inspect-${name}-certificate.ps1":
     ensure  => present,
     path    => "${scripts_dir}\\inspect-${name}.ps1",
