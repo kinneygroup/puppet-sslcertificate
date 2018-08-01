@@ -29,11 +29,10 @@ Get-Item -Path cert:\LocalMachine\My, cert:\<%= @root_store %>\<%= @store_dir %>
   }
 
   foreach($cert in $pfx) {
-    if($cert.Thumbprint -ne "$thumbprint") {
+    if($cert.Thumbprint -eq "$thumbprint") {
       $store.Add($cert)
     }
   }
   $store.close()
 }
 
-Remove-Item $MyINvocation.InvocationName
